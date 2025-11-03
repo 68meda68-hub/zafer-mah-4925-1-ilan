@@ -116,45 +116,6 @@
 	bottom: 40px; 
     }	
 }
-
-
-
-
- .custom-popup-carousel {
-    width: 220px; /* popup genişliği */
-    text-align: center;
-}
-
-.custom-popup-carousel .carousel-images {
-    width: 220px;
-    height: 150px;
-    position: relative;
-}
-
-.custom-popup-carousel .carousel-images img {
-    display: none;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.custom-popup-carousel .carousel-images img.active {
-    display: block;
-}
-
-.custom-popup-carousel .popup-subtext {
-    margin-top: 5px;
-    font-size: 12px;
-    color: green;      /* yeşil renk */
-    font-weight: bold;  /* kalın yazı */
-}
-
-
-
-
   </style>
 </head>
 <body>
@@ -320,30 +281,14 @@ map.addSource('google-satellite', {
           .setLngLat(centerCoord)
           .addTo(map);
 		}, 10000);
-        // Slider popup
-const popup = new mapboxgl.Popup({ offset: [0, -50], closeButton: false, closeOnClick: false })
-    .setLngLat(centerCoord)
-    .setHTML(`
-        <div class="custom-popup-carousel">
-            <div class="carousel-images">
-                <img src="images/1.jpeg" class="active" />
-                <img src="images/2.jpeg" />
-                <img src="images/3.jpeg" />
-            </div>
-            <div class="popup-subtext">SATILIK İMARLI PARSELLER</div>
-            <div class="popup-subtext">Zafer Mahallesi</div>
-        </div>
-    `)
-    .addTo(map);
-
-	const carouselImages = popup.getElement().querySelectorAll('.carousel-images img');
-	let currentIndex = 0;
-
-	setInterval(() => {
-		carouselImages[currentIndex].classList.remove('active');
-		currentIndex = (currentIndex + 1) % carouselImages.length;
-		carouselImages[currentIndex].classList.add('active');
-	}, 5000); // 5 saniyede bir geçiş
+        const popup = new mapboxgl.Popup({ offset: [0, -50], closeButton: false, closeOnClick: false })
+          .setLngLat(centerCoord)
+          .setHTML(`<div class="custom-popup">
+                SATILIK İMARLI PARSELLER<br />
+                <span class="popup-subtext">İmar: E=0.40 Hmax=2 Kat</span>
+                <span class="popup-subtext">Zafer Mahallesi</span>
+                </div>`)
+          .addTo(map);		
 
         setTimeout(() => {
           const popupEl = popup.getElement();
