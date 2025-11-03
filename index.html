@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zafer Mah 4925/1 Parsel</title>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: orange;
+      color: white;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      z-index: 9999;
+      white-space: nowrap;
+      opacity: 1;
+      transition: all 2s ease;
+      pointer-events: none;
+    }
+
+    #loading.animate {
+      top: calc(100% - 60px);
+      transform: translate(-50%, 0);
+      opacity: 0;
+    }
+
+    #loading-bottom {
+      position: fixed;
+      bottom: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: black;
+      color: white;
+      font-size: 11px;
+      padding: 5px 5px;
+      border-radius: 5px;
+      font-weight: bold;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 2s ease;
+    }
+
+    #fade {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2s;
+      z-index: 998;
+    }
+
+    .mapboxgl-popup {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .custom-popup {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: "Arial", sans-serif;
+      padding: 5px 5px;
+      background: rgba(0,0,0, 1);
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      text-align: center;
+      white-space: nowrap;
+      line-height: 14px;
+    }
+    .popup-subtext {
+      font-size: 11px;
+      color: #fff;
+      font-style: italic;
+      margin-top: 4px;
+      display: block;
+    }
+	
+#zoom-level {
+    position: absolute;
+    background: white;
+    padding: 5px 8px;
+    margin: 10px;
+    z-index: 1;
+    border-radius: 4px;
+    font-family: Tahoma;  
+	font-size: 10px;
+	color: #000;	
+	left: 0;
+	bottom: 25px; 
+    }	
+@media only screen and (max-width: 414px) {
+#zoom-level {
+    position: absolute;
+    background: white;
+    padding: 3px 3px;
+    margin: 10px;
+    z-index: 1;
+    border-radius: 4px;
+    font-family: Tahoma;  
+	font-size: 9px;	
+	left: 0;
+	bottom: 40px; 
+    }	
+}
+
+
+
+
+ .custom-popup-carousel {
+    width: 220px; /* popup genişliği */
+    text-align: center;
+}
+
+.custom-popup-carousel .carousel-images {
+    width: 220px;
+    height: 150px;
+    position: relative;
+}
+
+.custom-popup-carousel .carousel-images img {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.custom-popup-carousel .carousel-images img.active {
+    display: block;
+}
+
+.custom-popup-carousel .popup-subtext {
+    margin-top: 5px;
+    font-size: 12px;
+    color: green;      /* yeşil renk */
+    font-weight: bold;  /* kalın yazı */
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+<div id="loading"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
+<div id="loading-bottom"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
+<div id="fade"></div>
+
+<div id="map"></div>
+
+<div id="zoom-level">Zoom: --</div>
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VvZ3JhcGh5cHJvZiIsImEiOiJjanYxb2t1ZG8wNGU1NGFsNXVkcnhzNmFpIn0.M3qCJK8FYa06B-Irc6FD-g';
+
+  const initialCenter = [0, 0];
+  const initialZoom = 0;
+
+  const centerCoord = [34.007143, 38.412458];
+  const pirlantaLabelGeoJSON = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [34.008482, 38.413084]
+        },
+        properties: {
+          title: "Pırlanta Düğün Salonu"
+        }
+      }
+    ]
+  };
+ 
+
+  const geojsonData = {
+      "type": "FeatureCollection",
+      "features": [
+        { "type": "Feature", "properties": { "OBJECTID": 1, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/2", "DEGERI": null, "ACIKLAMA": "SATILDI", "ALAN_M2": 621.51 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006707666868145, 38.412618875530811 ], [ 34.0064603372509, 38.412566737746801 ], [ 34.006442855020538, 38.41282092687851 ], [ 34.006495672299437, 38.412875562155385 ], [ 34.006629551840959, 38.412898698399296 ], [ 34.006707666868145, 38.412618875530811 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 2, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/3", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006851211539939, 38.41293700390311 ], [ 34.006927105776491, 38.412665133372009 ], [ 34.006707666868145, 38.412618875530811 ], [ 34.006629551840959, 38.412898698399296 ], [ 34.006851211539939, 38.41293700390311 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 3, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/4", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007153159065524, 38.41271278503433 ], [ 34.007056728692156, 38.412692457731183 ], [ 34.006927105776491, 38.412665133372009 ], [ 34.006851211539939, 38.41293700390311 ], [ 34.007079552508067, 38.41297646352912 ], [ 34.007153159065524, 38.41271278503433 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 4, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/5", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007079552508067, 38.41297646352912 ], [ 34.00731521942766, 38.413017188639756 ], [ 34.007386464963382, 38.412761965009068 ], [ 34.007153159065524, 38.41271278503433 ], [ 34.007079552508067, 38.41297646352912 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 5, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/6", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.00731521942766, 38.413017188639756 ], [ 34.007473802449169, 38.413044592748435 ], [ 34.007553649400194, 38.413013342003907 ], [ 34.007666218919937, 38.41282093534975 ], [ 34.007386464963382, 38.412761965009068 ], [ 34.00731521942766, 38.413017188639756 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 6, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/7", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 846.08 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007739081565241, 38.412696396091349 ], [ 34.007101176104975, 38.412561928764426 ], [ 34.007056728692156, 38.412692457731183 ], [ 34.007153159065524, 38.41271278503433 ], [ 34.007386464963382, 38.412761965009068 ], [ 34.007666218919937, 38.41282093534975 ], [ 34.007739081565241, 38.412696396091349 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 7, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/8", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 884.53 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007145618273995, 38.412431414724146 ], [ 34.007101176104975, 38.412561928764426 ], [ 34.007739081565241, 38.412696396091349 ], [ 34.007811935622229, 38.412571871046765 ], [ 34.007145618273995, 38.412431414724146 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 8, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/9", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 923.07 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007145618273995, 38.412431414724146 ], [ 34.007811935622229, 38.412571871046765 ], [ 34.007884789432829, 38.412447345957702 ], [ 34.007190060287932, 38.412300900666359 ], [ 34.007145618273995, 38.412431414724146 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 9, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/10", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 961.61 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007190060287932, 38.412300900666359 ], [ 34.007884789432829, 38.412447345957702 ], [ 34.007957642997049, 38.412322820824173 ], [ 34.00771387269949, 38.412271435919124 ], [ 34.0074683111824, 38.412219672849446 ], [ 34.007234502146787, 38.412170386591029 ], [ 34.007190060287932, 38.412300900666359 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 10, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/11", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.49 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007957642997049, 38.412322820824173 ], [ 34.008039640708176, 38.412182665478142 ], [ 34.00796897714072, 38.412064202753967 ], [ 34.007796795271844, 38.412027908077718 ], [ 34.00771387269949, 38.412271435919124 ], [ 34.007957642997049, 38.412322820824173 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 11, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/12", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007551234527639, 38.411976145169184 ], [ 34.0074683111824, 38.412219672849446 ], [ 34.00771387269949, 38.412271435919124 ], [ 34.007796795271844, 38.412027908077718 ], [ 34.007551234527639, 38.411976145169184 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 12, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/13", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007234502146787, 38.412170386591029 ], [ 34.0074683111824, 38.412219672849446 ], [ 34.007551234527639, 38.411976145169184 ], [ 34.00730567242389, 38.411924381382569 ], [ 34.007222748305765, 38.412167908901679 ], [ 34.007234502146787, 38.412170386591029 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 13, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/14", "DEGERI": "200 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006977186529141, 38.412116144594314 ], [ 34.007222748305765, 38.412167908901679 ], [ 34.00730567242389, 38.411924381382569 ], [ 34.007060111420152, 38.411872617236355 ], [ 34.006977186529141, 38.412116144594314 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 14, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/15", "DEGERI": null, "ACIKLAMA": "SATILDI", "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006814552175456, 38.411820852869447 ], [ 34.006731626511574, 38.412064380066255 ], [ 34.006977186529141, 38.412116144594314 ], [ 34.007060111420152, 38.411872617236355 ], [ 34.006814552175456, 38.411820852869447 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 15, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/16", "DEGERI": null, "ACIKLAMA": "SATILDI", "ALAN_M2": 621.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006509608166368, 38.411850337565411 ], [ 34.006498270562574, 38.412015187631411 ], [ 34.006731626511574, 38.412064380066255 ], [ 34.006814552175456, 38.411820852869447 ], [ 34.006629600653682, 38.411781864338025 ], [ 34.006509608166368, 38.411850337565411 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 16, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/17", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 974.93 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.006977186529141, 38.412116144594314 ], [ 34.006731626511574, 38.412064380066255 ], [ 34.006498270562574, 38.412015187631411 ], [ 34.006488787551504, 38.412153071218519 ], [ 34.007190060287932, 38.412300900666359 ], [ 34.007234502146787, 38.412170386591029 ], [ 34.007222748305765, 38.412167908901679 ], [ 34.006977186529141, 38.412116144594314 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 17, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/18", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 927.5 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007190060287932, 38.412300900666359 ], [ 34.006488787551504, 38.412153071218519 ], [ 34.006479304510172, 38.412290954802131 ], [ 34.007145618273995, 38.412431414724146 ], [ 34.007190060287932, 38.412300900666359 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 18, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/19", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 880.08 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007145618273995, 38.412431414724146 ], [ 34.006479304510172, 38.412290954802131 ], [ 34.006469821438579, 38.41242883838229 ], [ 34.007101176104975, 38.412561928764426 ], [ 34.007145618273995, 38.412431414724146 ] ] ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 19, "ILCE": "Merkez", "MAHALLE": "Zafer", "PARSEL_NO": "4925/20", "DEGERI": "180 Euro/m2", "ACIKLAMA": null, "ALAN_M2": 832.76 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 34.007101176104975, 38.412561928764426 ], [ 34.006469821438579, 38.41242883838229 ], [ 34.0064603372509, 38.412566737746801 ], [ 34.006707666868145, 38.412618875530811 ], [ 34.006927105776491, 38.412665133372009 ], [ 34.007056728692156, 38.412692457731183 ], [ 34.007101176104975, 38.412561928764426 ] ] ] ] } }
+]
+    };
+
+  let markerAdded = false;
+  let rotating = false;
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/satellite-streets-v12',
+    center: centerCoord,
+    zoom: 0,
+    pitch: 0,
+    bearing: 0,
+    projection: 'globe',
+	attributionControl: false
+  });
+ 
+  
+  const zoomLevelDiv = document.getElementById('zoom-level');
+
+    function updateZoomLevel() {
+        const zoom = map.getZoom().toFixed(2);
+        zoomLevelDiv.textContent = `Zoom: ${zoom}`;
+    }
+
+    map.on('load', updateZoomLevel);
+    map.on('zoom', updateZoomLevel);
+    map.on('zoomend', updateZoomLevel);
+
+  // 10 saniye boyunca harita ve loading gösterilir
+  setTimeout(() => {
+    // Loading animasyonu başlat
+    const loading = document.getElementById('loading');
+    const loadingBottom = document.getElementById('loading-bottom');
+
+    loading.classList.add('animate');
+
+    setTimeout(() => {
+      // Loading gizle, alt loading göster
+      loading.style.display = 'none';
+      loadingBottom.style.opacity = '1';
+
+      // Harita hedefe uçsun
+      map.flyTo({
+        center: centerCoord,
+        zoom: 17,
+        speed: 0.3,
+        curve: 1.5,
+        essential: true
+      });
+    }, 2000); // Animasyon süresi
+  }, 10000); // 10 saniye bekleme
+
+  map.on('load', () => {
+    map.addSource('parcels', {
+      type: 'geojson',
+      data: geojsonData
+    });
+map.addSource('google-satellite', {
+      type: 'raster',
+      tiles: ['https://mt1.google.com/vt/lyrs=s,h,traffic&x={x}&y={y}&z={z}'],
+      tileSize: 256
+    });
+
+    map.addLayer({
+      id: 'google-satellite-layer',
+      type: 'raster',
+      source: 'google-satellite',
+      layout: { visibility: 'visible' }
+    });
+    // Dolgu katmanı
+    map.addLayer({
+      id: 'parcels-layer',
+      type: 'fill',
+      source: 'parcels',
+      paint: {
+        'fill-color': '#ffff00',
+        'fill-opacity': 1
+      },
+      minzoom: 15
+    });
+
+    // Çizgi katmanı
+    map.addLayer({
+      id: 'parcels-outline',
+      type: 'line',
+      source: 'parcels',
+      paint: {
+        'line-color': '#000',
+        'line-width': 1.2
+      },
+      minzoom: 15
+    });
+
+    // Zoom 0'dan 17'ye uçuş yerine, yukarıdaki animasyon sonrası uçuyoruz, bu yüzden burada yapmıyoruz
+
+    map.on('moveend', () => {
+      const zoom = map.getZoom();
+
+      if (zoom >= 17 && !markerAdded) {
+        markerAdded = true;
+
+		setTimeout(() => {
+        new mapboxgl.Marker()
+          .setLngLat(centerCoord)
+          .addTo(map);
+		}, 10000);
+        // Slider popup
+const popup = new mapboxgl.Popup({ offset: [0, -50], closeButton: false, closeOnClick: false })
+    .setLngLat(centerCoord)
+    .setHTML(`
+        <div class="custom-popup-carousel">
+            <div class="carousel-images">
+                <img src="images/1.jpeg" class="active" />
+                <img src="images/2.jpeg" />
+                <img src="images/3.jpeg" />
+            </div>
+            <div class="popup-subtext">SATILIK İMARLI PARSELLER</div>
+            <div class="popup-subtext">Zafer Mahallesi</div>
+        </div>
+    `)
+    .addTo(map);
+
+	const carouselImages = popup.getElement().querySelectorAll('.carousel-images img');
+	let currentIndex = 0;
+
+	setInterval(() => {
+		carouselImages[currentIndex].classList.remove('active');
+		currentIndex = (currentIndex + 1) % carouselImages.length;
+		carouselImages[currentIndex].classList.add('active');
+	}, 5000); // 5 saniyede bir geçiş
+
+        setTimeout(() => {
+          const popupEl = popup.getElement();
+          if (popupEl) popupEl.style.opacity = '1';
+        }, 10000);
+
+        if (!map.getLayer('parcels-labels')) {
+          map.addLayer({
+            id: 'parcels-labels',
+            type: 'symbol',
+            source: 'parcels',
+            layout: {
+				'text-field': [
+				'concat',
+				['to-string', ['get', 'ALAN_M2']],' m²'],
+				'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+				'text-size': 10,
+				'text-anchor': 'center',
+				'text-allow-overlap': true
+            },
+            paint: {
+              'text-color': '#000000'
+            },
+            minzoom: 15
+          });
+        }
+
+        setTimeout(() => {
+          if (map.getLayer('parcels-labels')) {
+            map.removeLayer('parcels-labels');
+          }
+        }, 9000);
+
+        setTimeout(() => {
+          map.flyTo({
+            zoom: 15,
+            pitch: 45,
+            speed: 0.1,
+            curve: 1.8,
+            essential: true
+          });
+        }, 10000);
+      }
+
+      if (Math.round(zoom) === 15 && !rotating) {
+        rotating = true;
+
+        let startBearing = map.getBearing();
+        const duration = 30000;
+        let startTime;
+
+        function rotate(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const currentBearing = startBearing + progress * 360;
+
+          map.setBearing(currentBearing);
+
+          if (progress < 1) {
+            requestAnimationFrame(rotate);
+          }
+        }
+
+        setTimeout(() => requestAnimationFrame(rotate), 1000);
+      }
+    });
+	
+	
+	map.addSource('pirlanta-label', {
+      type: 'geojson',
+      data: pirlantaLabelGeoJSON
+    });
+
+    map.addLayer({
+      id: 'pirlanta-label-layer',
+      type: 'symbol',
+      source: 'pirlanta-label',
+      layout: {
+        'text-field': ['get', 'title'],
+        'text-size': 12,
+        'text-offset': [0, 0.6],
+        'text-anchor': 'top',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-allow-overlap': true
+      },
+      paint: {
+        'text-color': '#ffffff',
+        'text-halo-color': '#0000ff',
+        'text-halo-width': 1
+      },
+      minzoom: 15 // istersen görünmesi için minimum zoom
+    });
+
+	
+	
+  });
+</script>
+</body>
+</html>
