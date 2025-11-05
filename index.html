@@ -30,100 +30,99 @@
     body { 
 	margin:0; 
 	padding:0;
-	
 	}
 #map { 
-    position: absolute; 
+	position: absolute; 
     top: 0; 
     bottom: 0; 
     width: 100vw; 
     background: radial-gradient(
 		circle at 50% 50%,
-	rgba(85, 85, 170, 0.8) 0%,    /* merkez: hafif şeffaf parlak mavi-mor */
-	rgba(68, 68, 170, 1) 15%,     /* merkeze yakın koyulaşma */
-	#222244 45%,                   /* orta alan: koyu mavi tonları */
-	#1a1a33 60%,                   /* kenar yakın: derin mavi-mor */
-	#000000 100%                    /* uç: tam siyah */
+		rgba(85, 85, 170, 0.8) 0%,    /* merkez: hafif şeffaf parlak mavi-mor */
+		rgba(68, 68, 170, 1) 15%,     /* merkeze yakın koyulaşma */
+		#222244 45%,                   /* orta alan: koyu mavi tonları */
+		#1a1a33 60%,                   /* kenar yakın: derin mavi-mor */
+		#000000 100%                    /* uç: tam siyah */
 	);
     transition: background-color 5s ease; /* Yumuşak geçiş */
 	}
 
-    #loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba (0, 0, 0, 0.5);
-      color: white; 
-      font-size: 12px;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-weight: bold;
-      z-index: 9999;
-      white-space: nowrap;
-      opacity: 1;
-      transition: all 2s ease;
-      pointer-events: none;
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba (0, 0, 0, 0.5);
+    color: white; 
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 9999;
+    white-space: nowrap;
+    opacity: 1;
+    transition: all 2s ease;
+    pointer-events: none;
     }
 
-    #loading.animate {
-      top: calc(100% - 60px);
-      transform: translate(-50%, 0);
-      opacity: 0;
+#loading.animate {
+    top: calc(100% - 60px);
+    transform: translate(-50%, 0);
+    opacity: 0;
     }
 
-    #loading-bottom {
-      position: fixed;
-      bottom: 42px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: black;
-      color: white;
-      font-size: 11px;
-      padding: 5px 5px;
-      border-radius: 5px;
-      font-weight: bold;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: opacity 2s ease;
+#loading-bottom {
+    position: fixed;
+    bottom: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    font-size: 11px;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 2s ease;
     }
 
-    #fade {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 2s;
-      z-index: 998;
+#fade {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s;
+    z-index: 998;
     }
 
-    .mapboxgl-popup {
-      opacity: 0;
-      transition: opacity 1.5s ease;
+.mapboxgl-popup {
+    opacity: 0;
+    transition: opacity 1.5s ease;
     }
 
-    .custom-popup {
-      color: #fff;
-      font-size: 12px;
-      font-weight: 500;
-      font-family: "Arial", sans-serif;
-      padding: 5px 5px;
-      background: rgba(0,0,0, 1);
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-      text-align: center;
-      white-space: nowrap;
-      line-height: 14px;
+.custom-popup {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: "Arial", sans-serif;
+    padding: 5px 5px;
+    background: rgba(0,0,0, 1);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    text-align: center;
+    white-space: nowrap;
+    line-height: 14px;
     }
-    .popup-subtext {
-      font-size: 11px;
-      color: #fff;
-      font-style: italic;
-      margin-top: 4px;
-      display: block;
+.popup-subtext {
+    font-size: 11px;
+    color: #fff;
+    font-style: italic;
+    margin-top: 4px;
+    display: block;
     }
 	
 #zoom-level {
@@ -169,12 +168,11 @@
     border-radius: 4px;
     z-index: 1;
     transition: color 0.3s ease, background 0.3s ease;
-}
+	}
 /* sadece ikon büyüsün */
 #current-time i {
-  font-size: 14px; /* ikon biraz büyük */
-  
-}
+	font-size: 14px; /* ikon biraz büyük */
+	}
 @media only screen and (max-width: 414px) {
 	#current-time {
     right: 10px;
@@ -197,12 +195,12 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 1; /* hemen görünür */
-}
+	}
 
 .custom-popup-carousel:hover {
     transform: scale(1.02);
     box-shadow: 0 8px 18px rgba(0,0,0,0.5);
-}
+	}
 
 .carousel-items {
     position: relative;
@@ -210,7 +208,7 @@
     height: 150px;
     border-radius: 8px 8px 0 0;
     border-bottom: 2px solid #fff;
-}
+	}
 
 .carousel-item {
     position: absolute;
@@ -220,18 +218,18 @@
     height: 100%;
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
-}
+	}
 
 .carousel-item.active {
     opacity: 1;
-}
+	}
 
 .carousel-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 8px 8px 0 0;
-}
+	}
 
 
 .carousel-item .caption {
@@ -243,8 +241,8 @@
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    color: #0000ff; 
-    text-shadow: 0 0 2.5px #ffa500;
+    color: #000; 
+    text-shadow: 0 0 2.5px #fff;
     padding: 2px 5px;
     font-size: 11px;
     background: none;
@@ -252,11 +250,7 @@
     text-align: center;
 	//font-weight:bold;
 	font-family: Tahoma;
-}
-
-
-
-
+	}
 
 .popup-subtext {
     font-family: 'Tahoma';
@@ -265,17 +259,16 @@
     font-weight: bold;
     line-height: 1.2; /* biraz daha rahat satır aralığı */
     margin: 5px 0 0 0;
-}
+	}
 .popup-subtext {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-}
-
+	}
 
 .carousel-dots {
     text-align: center;
     margin-top: 4px;
-}
+	}
 
 .dot {
     display: inline-block;
@@ -285,52 +278,48 @@
     background-color: rgba(100, 180, 255, 0.35);
     border-radius: 50%;
     transition: all 0.3s ease;
-}
+	}
 
 .dot.active {
     background-color: #64b4ff;
     transform: scale(1.2);
 }
 
-
 /* Varsayılan masaüstü boyutu */
 .popup-close-btn {
-  position: absolute;
-  left: 5px;
-  bottom: 5px;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  font-size: 10px;
-  line-height: 12px;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  transition: background 0.2s ease;
-  padding: 0;
-}
+	position: absolute;
+	left: 5px;
+	bottom: 5px;
+	background: rgba(0,0,0,0.5);
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	font-size: 10px;
+	line-height: 12px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+	transition: background 0.2s ease;
+	padding: 0;
+	}
 
 .popup-close-btn:hover {
-  background: #e04c4c;
+	background: #e04c4c;
 }
 
 /* Mobil uyumlu: ekran 480px veya daha küçükse butonu küçült */
 @media screen and (max-width: 414px) {
-  .popup-close-btn {
-    width: 10px;
+.popup-close-btn {
+	width: 10px;
     height: 10px;
     font-size: 8px;
     line-height: 10px;
     left: 4px;
     bottom: 4px;
-  }
+	}
 }
-
-
-
 
 
 
@@ -338,14 +327,14 @@
 </head>
 <body>
 
-<div id="loading"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
-<div id="loading-bottom"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
-<div id="fade"></div>
+	<div id="loading"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
+	<div id="loading-bottom"><sup><i>en </i></sup>NET<i> max</i> GAYRİMENKUL</div>
+	<div id="fade"></div>
 
-<div id="map"></div>
+	<div id="map"></div>
 
-<div id="zoom-level">Zoom: --</div>
-<div id="current-time"><i class="fa-solid fa-clock"></i> --:--:--</div>
+	<div id="zoom-level">Zoom: --</div>
+	<div id="current-time"><i class="fa-solid fa-clock"></i> --:--:--</div>
 
 
 <script>
@@ -425,31 +414,55 @@
     map.on('zoom', updateZoomLevel);
     map.on('zoomend', updateZoomLevel);
 
-  // 10 saniye boyunca harita ve loading gösterilir
+  // ⏳ Yükleme ve uçuş süreci
+  
+
+  map.on('load', () => {
+  
+	// 🌍 Küre dönüş animasyonu
+  let rotating = true;
+  let rotateFrame;
+
+  function rotateGlobe() {
+    if (!rotating) return;
+    const speed = 0.2;
+    const center = map.getCenter();
+    let newLng = center.lng + speed;
+    if (newLng > 180) newLng -= 360;
+    map.jumpTo({ center: [newLng, center.lat] });
+    rotateFrame = requestAnimationFrame(rotateGlobe);
+  }
+
+  rotateGlobe();
+ 
+// ⏳ Yükleme ve uçuş süreci
   setTimeout(() => {
-    // Loading animasyonu başlat
     const loading = document.getElementById('loading');
     const loadingBottom = document.getElementById('loading-bottom');
 
     loading.classList.add('animate');
 
     setTimeout(() => {
-      // Loading gizle, alt loading göster
+      cancelAnimationFrame(rotateFrame);
+      rotating = false;
+
       loading.style.display = 'none';
       loadingBottom.style.opacity = '1';
 
-      // Harita hedefe uçsun
-      map.flyTo({
-        center: centerCoord,
-        zoom: 17,
-        speed: 0.3,
-        curve: 1.5,
-        essential: true
+      map.once('idle', () => {
+        map.flyTo({
+          center: centerCoord,
+          zoom: 17,
+          speed: 0.3,
+          curve: 1.5,
+          essential: true
+        });
       });
-    }, 2000); // Animasyon süresi
-  }, 3000); // 10 saniye bekleme
 
-  map.on('load', () => {
+    }, 2000);
+  }, 3000); 
+  
+  
     map.addSource('parcels', {
       type: 'geojson',
       data: geojsonData
@@ -528,13 +541,7 @@ map.addLayer({
     'text-halo-width': 1.5
   },
   minzoom: 17
-});
-
-	
-	
-	
-	
-	
+});	
 
     // Zoom 0'dan 17'ye uçuş yerine, yukarıdaki animasyon sonrası uçuyoruz, bu yüzden burada yapmıyoruz
 
